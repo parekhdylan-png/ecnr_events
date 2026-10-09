@@ -1,0 +1,2362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accenture Energy — Conference & Events Tracker 2026–27</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+  :root {
+    --ink: #0f1923;
+    --ink-mid: #3d4f5e;
+    --ink-light: #7d93a3;
+    --canvas: #f5f7f9;
+    --surface: #ffffff;
+    --border: #dde4ea;
+    --accent: #a100ff; /* Accenture purple */
+    --accent-dim: #e8ccff;
+    --upstream: #1d6fa4;
+    --upstream-bg: #e8f2f9;
+    --newenergy: #1a8c5a;
+    --newenergy-bg: #e0f4ec;
+    --downstream: #d4670d;
+    --downstream-bg: #fdf0e3;
+    --trading: #7a3fb5;
+    --trading-bg: #f2eafc;
+    --cnr: #b5503f;
+    --cnr-bg: #fdecea;
+    --cross: #1d6fa4;
+    --cross-bg: #e8f2f9;
+    --status-done: #1a8c5a;
+    --status-upcoming: #d4670d;
+    --status-future: #7d93a3;
+    --high: #a100ff;
+    --medium: #1d6fa4;
+    --low: #7d93a3;
+    --shadow: 0 1px 3px rgba(15,25,35,.08), 0 4px 12px rgba(15,25,35,.05);
+    --shadow-hover: 0 4px 16px rgba(15,25,35,.14);
+    --radius: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--canvas);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: #fff;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--accent);
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .accenture-mark {
+    width: 26px; height: 26px;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    flex-shrink: 0;
+  }
+  .header-brand h1 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: #fff;
+  }
+  .header-brand span {
+    font-size: 11px;
+    color: rgba(255,255,255,.5);
+    font-weight: 400;
+    display: block;
+    letter-spacing: .04em;
+  }
+  nav {
+    display: flex;
+    gap: 4px;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,.6);
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .15s;
+    font-family: inherit;
+  }
+  nav button:hover { background: rgba(255,255,255,.1); color: #fff; }
+  nav button.active { background: var(--accent); color: #fff; }
+
+  /* ── LAYOUT ── */
+  main {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px 32px 48px;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── SUMMARY DASHBOARD ── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+  }
+  .stat-card .stat-val {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 38px;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .stat-card .stat-val.accent { color: var(--accent); }
+  .stat-card .stat-label {
+    font-size: 12px;
+    color: var(--ink-light);
+    font-weight: 500;
+    letter-spacing: .03em;
+  }
+
+  .summary-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+  }
+  .chart-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-mid);
+    margin-bottom: 16px;
+    letter-spacing: .02em;
+  }
+
+  .sector-bars { display: flex; flex-direction: column; gap: 10px; }
+  .sector-bar-row { display: flex; align-items: center; gap: 10px; }
+  .sector-bar-label { width: 110px; font-size: 12px; color: var(--ink-mid); flex-shrink: 0; }
+  .sector-bar-track { flex: 1; background: var(--border); border-radius: 2px; height: 8px; overflow: hidden; }
+  .sector-bar-fill { height: 100%; border-radius: 2px; transition: width .4s; }
+  .sector-bar-count { font-size: 12px; font-weight: 600; color: var(--ink); width: 24px; text-align: right; }
+
+  .priority-donut { display: flex; align-items: center; gap: 24px; }
+  .donut-legend { display: flex; flex-direction: column; gap: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── FILTERS ── */
+  .filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    align-items: center;
+  }
+  .filter-select, .filter-input {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--ink);
+    background: var(--surface);
+    cursor: pointer;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .filter-select:focus, .filter-input:focus { border-color: var(--accent); }
+  .filter-input { width: 220px; }
+  .filter-label { font-size: 12px; color: var(--ink-light); font-weight: 500; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: all .15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #8800dd; }
+  .btn-ghost { background: var(--surface); color: var(--ink-mid); border: 1px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+  /* ── EVENT TABLE ── */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    background: var(--ink);
+    color: rgba(255,255,255,.85);
+    font-weight: 500;
+    font-size: 11.5px;
+    letter-spacing: .04em;
+    padding: 11px 14px;
+    text-align: left;
+    white-space: nowrap;
+    position: sticky;
+    top: 56px;
+    z-index: 10;
+  }
+  thead th:first-child { border-radius: 0; }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background .1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--canvas); }
+  tbody td {
+    padding: 10px 14px;
+    vertical-align: middle;
+    color: var(--ink);
+  }
+  .cell-event-name {
+    font-weight: 500;
+    max-width: 280px;
+    line-height: 1.35;
+  }
+  .cell-event-name a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color .15s;
+  }
+  .cell-event-name a:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── TAGS / BADGES ── */
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .tag-upstream { background: var(--upstream-bg); color: var(--upstream); }
+  .tag-newenergy { background: var(--newenergy-bg); color: var(--newenergy); }
+  .tag-downstream { background: var(--downstream-bg); color: var(--downstream); }
+  .tag-trading { background: var(--trading-bg); color: var(--trading); }
+  .tag-cnr { background: var(--cnr-bg); color: var(--cnr); }
+  .tag-cross { background: var(--cross-bg); color: var(--cross); }
+
+  .badge-high { color: var(--accent); font-weight: 600; font-size: 12px; }
+  .badge-medium { color: var(--medium); font-weight: 600; font-size: 12px; }
+  .badge-low { color: var(--low); font-size: 12px; }
+
+  .status-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .status-dot::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+  .status-done { color: var(--status-done); }
+  .status-done::before { background: var(--status-done); }
+  .status-upcoming { color: var(--status-upcoming); }
+  .status-upcoming::before { background: var(--status-upcoming); }
+  .status-future { color: var(--status-future); }
+  .status-future::before { background: var(--status-future); }
+
+  /* ── GANTT ── */
+  .gantt-outer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .gantt-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .gantt-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    align-items: center;
+  }
+  .gantt-legend-item { display: flex; align-items: center; gap: 6px; }
+  .gantt-legend-swatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+  .gantt-zoom-label { font-size: 12px; color: var(--ink-mid); font-weight: 500; white-space: nowrap; }
+  .zoom-btn {
+    width: 28px; height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--canvas);
+    font-size: 15px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink);
+    transition: all .15s;
+    font-family: inherit;
+    line-height: 1;
+  }
+  .zoom-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+  .zoom-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 120px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+  }
+  .zoom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+  }
+  .gantt-scroll {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 72vh;
+    position: relative;
+    cursor: grab;
+  }
+  .gantt-scroll:active { cursor: grabbing; }
+  .gantt-canvas-wrap {
+    position: relative;
+    display: inline-block;
+    min-width: 100%;
+  }
+  #gantt-header-canvas {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  #gantt-body-canvas { display: block; }
+
+  /* tooltip */
+  .gantt-tooltip {
+    position: fixed;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 900;
+    max-width: 260px;
+    line-height: 1.5;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    display: none;
+  }
+  .gantt-tooltip strong { display: block; margin-bottom: 2px; font-size: 13px; }
+  .gantt-tooltip .tt-meta { color: rgba(255,255,255,.65); font-size: 11px; }
+
+  /* ── SURVEY ── */
+  .survey-header {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .survey-form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    max-width: 800px;
+    box-shadow: var(--shadow);
+  }
+  .survey-form-card h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+  .survey-subtitle {
+    font-size: 13px;
+    color: var(--ink-mid);
+    margin-bottom: 24px;
+  }
+
+  .form-section {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .form-section:last-child { border-bottom: none; }
+  .form-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: var(--accent);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .form-row.full { grid-template-columns: 1fr; }
+  .form-field { display: flex; flex-direction: column; gap: 5px; }
+  .form-field label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-mid);
+  }
+  .form-field input, .form-field select, .form-field textarea {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--canvas);
+    outline: none;
+    transition: border-color .15s;
+    resize: vertical;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus {
+    border-color: var(--accent);
+    background: #fff;
+  }
+  .form-field textarea { min-height: 80px; }
+
+  .contact-entry {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    margin-bottom: 12px;
+    background: var(--canvas);
+    position: relative;
+  }
+  .contact-entry .remove-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: none;
+    border: none;
+    color: var(--ink-light);
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 2px;
+  }
+  .contact-entry .remove-btn:hover { color: #e53935; }
+
+  .rating-group {
+    display: flex;
+    gap: 8px;
+  }
+  .rating-btn {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--canvas);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+    color: var(--ink-mid);
+  }
+  .rating-btn:hover, .rating-btn.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* ── SURVEY RESPONSES ── */
+  .responses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .response-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+  .response-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .response-card-title { font-weight: 600; font-size: 14px; }
+  .response-card-meta { font-size: 11px; color: var(--ink-light); margin-top: 2px; }
+  .response-detail { display: flex; flex-direction: column; gap: 8px; }
+  .response-row { font-size: 12.5px; }
+  .response-row strong { color: var(--ink-mid); font-weight: 500; display: block; font-size: 11px; letter-spacing: .03em; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,25,35,.55);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 680px;
+    width: 92%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(15,25,35,.25);
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--canvas);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-mid);
+  }
+  .modal-close:hover { background: #fee; border-color: #e53935; color: #e53935; }
+
+  /* ── ADD EVENT FORM ── */
+  .add-event-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    max-width: 900px;
+    box-shadow: var(--shadow);
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--ink);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(15,25,35,.2);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all .3s;
+    z-index: 1000;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-left: 3px solid var(--newenergy); }
+  .toast.error { border-left: 3px solid #e53935; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 48px;
+    color: var(--ink-light);
+  }
+  .empty-state svg { margin-bottom: 12px; opacity: .4; }
+  .empty-state p { font-size: 14px; }
+
+  /* ── PAGE TITLE ── */
+  .page-title {
+    margin-bottom: 22px;
+  }
+  .page-title h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  .page-title p {
+    font-size: 13px;
+    color: var(--ink-mid);
+    margin-top: 4px;
+  }
+
+  .results-count { font-size: 12px; color: var(--ink-light); margin-bottom: 10px; }
+
+  @media (max-width: 900px) {
+    main { padding: 16px; }
+    .summary-grid { grid-template-columns: repeat(2,1fr); }
+    .summary-row { grid-template-columns: 1fr; }
+    nav button span { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand">
+    <div class="accenture-mark"></div>
+    <div>
+      <h1>Energy & CNR Events</h1>
+      <span>Accenture ECNR · 2026–27 Conference Tracker</span>
+    </div>
+  </div>
+  <nav>
+    <button class="active" onclick="showView('summary')"><span>📊 </span>Summary</button>
+    <button onclick="showView('tracker')"><span>📋 </span>Events</button>
+    <button onclick="showView('gantt')"><span>📅 </span>Gantt</button>
+    <button onclick="showView('survey')"><span>📝 </span>Survey</button>
+    <button onclick="showView('responses')"><span>💬 </span>Responses</button>
+    <button onclick="showView('add')"><span>＋ </span>Add Event</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ══════════════════════════ SUMMARY VIEW ══════════════════════════ -->
+<div id="view-summary" class="view active">
+  <div class="page-title">
+    <h2>Dashboard</h2>
+    <p>Accenture Energy & CNR — Conference & Events Tracker, May 2026 – Sep 2027</p>
+  </div>
+
+  <div class="summary-grid" id="summary-stats"></div>
+
+  <div class="summary-row">
+    <div class="chart-card">
+      <h3>Events by Sector</h3>
+      <div class="sector-bars" id="sector-bars"></div>
+    </div>
+    <div class="chart-card">
+      <h3>Attendance Priority</h3>
+      <div class="priority-donut">
+        <svg id="donut-svg" width="120" height="120" viewBox="0 0 120 120"></svg>
+        <div class="donut-legend" id="donut-legend"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-card" style="margin-bottom:0">
+    <h3>Upcoming events — next 12 weeks</h3>
+    <div id="upcoming-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ TRACKER VIEW ══════════════════════════ -->
+<div id="view-tracker" class="view">
+  <div class="page-title">
+    <h2>Event Tracker</h2>
+    <p>Full programme of tracked industry events across all sectors.</p>
+  </div>
+
+  <div class="filters">
+    <span class="filter-label">Filter:</span>
+    <input type="text" class="filter-input" id="search-input" placeholder="Search events…" oninput="renderTable()">
+    <select class="filter-select" id="sector-filter" onchange="renderTable()">
+      <option value="">All sectors</option>
+      <option>Upstream</option>
+      <option>New Energies</option>
+      <option>Downstream</option>
+      <option>Trading</option>
+      <option>CNR</option>
+      <option>Cross Energy</option>
+    </select>
+    <select class="filter-select" id="priority-filter" onchange="renderTable()">
+      <option value="">All priorities</option>
+      <option>High</option>
+      <option>Medium</option>
+      <option>Low</option>
+    </select>
+    <select class="filter-select" id="status-filter" onchange="renderTable()">
+      <option value="">All statuses</option>
+      <option>Completed</option>
+      <option>Upcoming</option>
+      <option>Future (2027)</option>
+    </select>
+    <select class="filter-select" id="city-filter" onchange="renderTable()">
+      <option value="">All cities</option>
+    </select>
+  </div>
+  <div class="results-count" id="results-count"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Event</th>
+          <th>Sector</th>
+          <th>Type</th>
+          <th>Date</th>
+          <th>City</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Attended</th>
+          <th>Attendees</th>
+          <th>MMS Opp</th>
+          <th>Survey</th>
+        </tr>
+      </thead>
+      <tbody id="event-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════ GANTT VIEW ══════════════════════════ -->
+<div id="view-gantt" class="view">
+  <div class="page-title">
+    <h2>Conference Calendar</h2>
+    <p>Upcoming and future events, plotted to the exact day. Scroll to pan, use zoom controls to expand.</p>
+  </div>
+
+  <div class="gantt-outer">
+    <div class="gantt-toolbar">
+      <span class="gantt-zoom-label">Zoom</span>
+      <button class="zoom-btn" onclick="ganttZoom(-1)" title="Zoom out">−</button>
+      <input type="range" class="zoom-slider" id="zoom-slider" min="1" max="10" step="0.25" value="3" oninput="ganttZoomSet(this.value)">
+      <button class="zoom-btn" onclick="ganttZoom(1)" title="Zoom in">+</button>
+      <span id="zoom-display" style="font-size:12px;color:var(--ink-light);min-width:60px">Month view</span>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="ganttScrollToday()">Jump to Today</button>
+      </div>
+    </div>
+    <div class="gantt-legend">
+      <div class="gantt-legend-item"><div class="gantt-legend-swatch" style="background:#1d6fa4"></div>Upstream</div>
+      <div class="gantt-legend-item"><div class="gantt-legend-swatch" style="background:#1a8c5a"></div>New Energies</div>
+      <div class="gantt-legend-item"><div class="gantt-legend-swatch" style="background:#d4670d"></div>Downstream</div>
+      <div class="gantt-legend-item"><div class="gantt-legend-swatch" style="background:#7a3fb5"></div>Trading</div>
+      <div class="gantt-legend-item"><div class="gantt-legend-swatch" style="background:#b5503f"></div>CNR/Mining</div>
+      <div class="gantt-legend-item"><div class="gantt-legend-swatch" style="background:#cfd8dc"></div>2027+</div>
+      <div class="gantt-legend-item"><div class="gantt-legend-swatch" style="background:#a100ff;opacity:.8"></div>Today</div>
+    </div>
+    <div class="gantt-scroll" id="gantt-scroll">
+      <div class="gantt-canvas-wrap" id="gantt-canvas-wrap">
+        <canvas id="gantt-header-canvas"></canvas>
+        <canvas id="gantt-body-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="gantt-tooltip" id="gantt-tooltip"></div>
+</div>
+
+<!-- ══════════════════════════ SURVEY VIEW ══════════════════════════ -->
+<div id="view-survey" class="view">
+  <div class="page-title">
+    <h2>Post-Event Survey</h2>
+    <p>Capture attendee feedback, connections made, conversations had, and MMS opportunity links.</p>
+  </div>
+
+  <div class="survey-form-card">
+    <h2>Event Debrief</h2>
+    <p class="survey-subtitle">Complete this after attending an event. Your response will be saved and visible in the Responses tab.</p>
+
+    <div class="form-section">
+      <div class="form-section-title">Event Details</div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Event *</label>
+          <select id="s-event">
+            <option value="">Select event…</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Your name *</label>
+          <input type="text" id="s-name" placeholder="e.g. Jamie Smith">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Your role</label>
+          <input type="text" id="s-role" placeholder="e.g. Energy Practice Lead">
+        </div>
+        <div class="form-field">
+          <label>Date attended</label>
+          <input type="date" id="s-date">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Connections Made</div>
+      <p style="font-size:12px;color:var(--ink-mid);margin-bottom:12px;">Add each person you had a meaningful conversation with.</p>
+      <div id="contacts-list"></div>
+      <button class="btn btn-ghost btn-sm" onclick="addContact()">+ Add Contact</button>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Conversations & Themes</div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label>Key topics and themes discussed</label>
+          <textarea id="s-topics" placeholder="e.g. CCUS project economics, digital twin deployment at Harbour Energy, interest in Accenture's AI monitoring offer…"></textarea>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label>Accenture positioning / messaging that resonated</label>
+          <textarea id="s-messaging" placeholder="What did you say about Accenture that got a positive reaction?"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">MMS Opportunity Links</div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label>MMS opportunity IDs / links</label>
+          <input type="text" id="s-mms" placeholder="e.g. OPP-2026-1234, OPP-2026-1235 (comma-separated)">
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label>New opportunities identified (describe briefly)</label>
+          <textarea id="s-newopps" placeholder="Any new potential opportunities surfaced at the event?"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Ratings & Recommendations</div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Overall event quality (1–5)</label>
+          <div class="rating-group" id="rating-quality"></div>
+        </div>
+        <div class="form-field">
+          <label>BD value for Accenture (1–5)</label>
+          <div class="rating-group" id="rating-bd"></div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Prioritise for next year?</label>
+          <select id="s-nextyear">
+            <option value="">Select…</option>
+            <option>Yes — must attend</option>
+            <option>Yes — if resource allows</option>
+            <option>Maybe — review closer to time</option>
+            <option>No</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Recommend sponsorship / speaking?</label>
+          <select id="s-sponsor">
+            <option value="">Select…</option>
+            <option>Yes — speak</option>
+            <option>Yes — sponsor</option>
+            <option>Yes — both</option>
+            <option>No</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label>Any other notes / next steps</label>
+          <textarea id="s-notes" placeholder="Follow-up actions, introductions to make, content to send…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="submitSurvey()">Save Debrief</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════ RESPONSES VIEW ══════════════════════════ -->
+<div id="view-responses" class="view">
+  <div class="page-title">
+    <h2>Survey Responses</h2>
+    <p>All submitted event debriefs and feedback.</p>
+  </div>
+  <div id="responses-container">
+    <div class="empty-state">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12h8M8 8h8M8 16h4"/></svg>
+      <p>No responses yet. Submit the first debrief from the Survey tab.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ ADD EVENT ══════════════════════════ -->
+<div id="view-add" class="view">
+  <div class="page-title">
+    <h2>Add New Event</h2>
+    <p>Add a new conference or event to the tracker.</p>
+  </div>
+
+  <!-- SharePoint REST setup instructions -->
+  <div id="sp-setup-card" style="background:#fff;border:1px solid #dde4ea;border-radius:8px;padding:22px 26px;max-width:900px;margin-bottom:22px;box-shadow:0 1px 3px rgba(15,25,35,.08)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <div style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div>
+      <strong style="font-size:13px;color:#0f1923">SharePoint not connected</strong>
+      <span style="font-size:12px;color:#7d93a3">— events added here are session-only until set up</span>
+    </div>
+    <div style="font-size:12.5px;color:#3d4f5e;line-height:1.8">
+      Just <strong>2 steps</strong> — no Azure, no Power Automate, no IT needed:
+
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px">
+
+        <div style="padding:14px 16px;border:1px solid #dde4ea;border-radius:6px">
+          <div style="font-weight:600;color:#0f1923;margin-bottom:8px">① Create a SharePoint List <span style="font-weight:400;color:#7d93a3">(~3 mins)</span></div>
+          Go to your SharePoint site → click <strong>New → List → Blank list</strong> → name it exactly:
+          <code style="background:#f5f7f9;padding:2px 8px;border-radius:3px;font-size:12px;display:inline-block;margin:4px 0">ECNR_Events</code><br>
+          Then add these columns — all <strong>Single line of text</strong>, names must match exactly:<br>
+          <code style="background:#f5f7f9;padding:6px 10px;border-radius:3px;display:block;margin-top:8px;font-size:11px;line-height:2">
+            EventSector &nbsp;·&nbsp; EventType &nbsp;·&nbsp; Organiser &nbsp;·&nbsp; EventDate &nbsp;·&nbsp; StartDate &nbsp;·&nbsp; EndDate<br>
+            City &nbsp;·&nbsp; EventLink &nbsp;·&nbsp; Cost &nbsp;·&nbsp; Priority &nbsp;·&nbsp; WhoAttends &nbsp;·&nbsp; EventStatus<br>
+            Attended &nbsp;·&nbsp; Attendees &nbsp;·&nbsp; MmsOpp &nbsp;·&nbsp; NextSteps
+          </code>
+        </div>
+
+        <div style="padding:14px 16px;border:1px solid #dde4ea;border-radius:6px">
+          <div style="font-weight:600;color:#0f1923;margin-bottom:8px">② Edit one line in this HTML file <span style="font-weight:400;color:#7d93a3">(~1 min)</span></div>
+          Open this HTML file in any text editor (Notepad, VS Code, etc.).<br>
+          Find the line that says:<br>
+          <code style="background:#f5f7f9;padding:4px 10px;border-radius:3px;display:block;margin:8px 0;font-size:12px">const SP_SITE = 'YOUR_SHAREPOINT_SITE_URL';</code>
+          Replace <code style="background:#f5f7f9;padding:1px 6px;border-radius:3px">YOUR_SHAREPOINT_SITE_URL</code> with your actual SharePoint site URL, e.g.:<br>
+          <code style="background:#f5f7f9;padding:4px 10px;border-radius:3px;display:block;margin:8px 0;font-size:12px">const SP_SITE = 'https://accenture.sharepoint.com/sites/ECNR';</code>
+          Save the file and re-upload it to SharePoint.
+        </div>
+
+        <div style="padding:12px 16px;background:#f0faf4;border:1px solid #a7f3d0;border-radius:6px;font-size:12px;color:#065f46">
+          <strong>That's it.</strong> The file uses your existing SharePoint login — no sign-in prompts, no tokens, no IT involvement. Anyone who opens the file from SharePoint will automatically see all shared events. Works in any modern browser.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk sync card -->
+  <div id="bulk-sync-card" style="background:#fff;border:1px solid #dde4ea;border-radius:8px;padding:20px 26px;max-width:900px;margin-bottom:22px;box-shadow:0 1px 3px rgba(15,25,35,.08)">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px">
+      <div>
+        <div style="font-weight:600;font-size:13px;color:#0f1923;margin-bottom:4px">📤 Push all events to SharePoint</div>
+        <div style="font-size:12px;color:#7d93a3">Write all <span id="sync-event-count"></span> built-in events to your SharePoint list so the full dataset is shared with everyone. Only events not already in the list will be added.</div>
+      </div>
+      <button class="btn btn-primary" id="bulk-sync-btn" onclick="bulkSyncToSharePoint()">Sync all events to SharePoint</button>
+    </div>
+    <div id="bulk-sync-progress" style="display:none;margin-top:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#3d4f5e;margin-bottom:6px">
+        <span id="bulk-sync-label">Starting…</span>
+        <span id="bulk-sync-pct">0%</span>
+      </div>
+      <div style="background:#f0f0f0;border-radius:4px;height:8px;overflow:hidden">
+        <div id="bulk-sync-bar" style="height:100%;background:var(--accent);border-radius:4px;width:0%;transition:width .3s"></div>
+      </div>
+      <div id="bulk-sync-errors" style="margin-top:8px;font-size:11.5px;color:#dc2626;display:none"></div>
+    </div>
+  </div>
+
+  <div class="add-event-card">
+    <div class="form-section">
+      <div class="form-section-title">Core Details</div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Event name *</label>
+          <input type="text" id="ae-name" placeholder="Full event name">
+        </div>
+        <div class="form-field">
+          <label>URL / Link *</label>
+          <input type="url" id="ae-url" placeholder="https://">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Start date *</label>
+          <input type="date" id="ae-startdate">
+        </div>
+        <div class="form-field">
+          <label>End date</label>
+          <input type="date" id="ae-enddate">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Venue / Location</label>
+          <input type="text" id="ae-venue" placeholder="e.g. P&J Live, Aberdeen">
+        </div>
+        <div class="form-field">
+          <label>City</label>
+          <input type="text" id="ae-city" placeholder="e.g. Aberdeen">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Classification</div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Sector / Category *</label>
+          <select id="ae-sector">
+            <option value="">Select…</option>
+            <option>Upstream</option>
+            <option>New Energies</option>
+            <option>Downstream</option>
+            <option>Trading</option>
+            <option>CNR</option>
+            <option>Cross Energy</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Event type</label>
+          <select id="ae-type">
+            <option value="">Select…</option>
+            <option>Conference</option>
+            <option>Summit</option>
+            <option>Breakfast Briefing</option>
+            <option>Exhibition / Conference</option>
+            <option>Forum</option>
+            <option>Awards</option>
+            <option>Regulatory Forum</option>
+            <option>Executive Forum</option>
+            <option>Technical Conference</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Organiser</label>
+          <input type="text" id="ae-organiser" placeholder="e.g. OEUK, SPE, Wood Mackenzie">
+        </div>
+        <div class="form-field">
+          <label>Priority</label>
+          <select id="ae-priority">
+            <option value="">Select…</option>
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Cost</label>
+          <input type="text" id="ae-cost" placeholder="e.g. Paid / Free / Invitation-only">
+        </div>
+        <div class="form-field">
+          <label>Who should attend?</label>
+          <input type="text" id="ae-who" placeholder="e.g. Practice Lead / BD Director">
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label>ROI & Strategic Value</label>
+          <textarea id="ae-roi" placeholder="Brief rationale for attending (1-2 sentences)"></textarea>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label>Next Steps</label>
+          <input type="text" id="ae-nextsteps" placeholder="e.g. Register / Explore speaking slot / Monitor">
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="addEvent()">Add to Tracker</button>
+  </div>
+</div>
+
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+
+let events = [
+  {id:1,name:"International Energy Week 2026",type:"Conference & Forum",sector:"Upstream",organiser:"Energy Institute (EI)",date:"10–13 Feb 2026",startDate:"2026-02-10",endDate:"2026-02-13",city:"London",link:"https://www.ieweek.co.uk",cost:"Paid – delegate",priority:"High",who:"Practice Lead / BD Director",status:"Completed",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:2,name:"NSTA Data & Digital Strategy Forum",type:"Regulatory Forum",sector:"Upstream",organiser:"NSTA",date:"Feb 2026",startDate:"2026-02-13",city:"Aberdeen",link:"https://www.nstauthority.co.uk",cost:"Free (invitation)",priority:"High",who:"Digital Lead / NSTA Relationship Manager",status:"Completed",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:3,name:"OEUK Share Fair 2026",type:"Industry Event",sector:"Upstream",organiser:"Offshore Energies UK (OEUK)",date:"19 Mar 2026",startDate:"2026-03-19",city:"Aberdeen",link:"https://oeuk.org.uk/events/",cost:"Free / Exhibitor",priority:"High",who:"Supply Chain / Key CALs",status:"Completed",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:4,name:"OEUK Business Outlook Briefing",type:"Breakfast Briefing",sector:"Upstream",organiser:"Offshore Energies UK (OEUK)",date:"24 Mar 2026",startDate:"2026-03-24",city:"Aberdeen",link:"https://oeuk.org.uk/events/",cost:"Free / Member",priority:"Medium",who:"Scotland Regional Team / Mid-Market Leads",status:"Completed",attended:"",attendees:"",roi:"Medium",mms:"",nextsteps:""},
+  {id:5,name:"UKIFDA EXPO & Conference 2026",type:"Exhibition / Conference",sector:"Downstream",organiser:"UKIFDA",date:"15–16 Apr 2026",startDate:"2026-04-15",endDate:"2026-04-16",city:"Liverpool",link:"https://ukifda.org/ukifda-events/",cost:"Paid",priority:"Medium",who:"Downstream Lead / Fuels Distribution SME",status:"Completed",attended:"Yes",attendees:"2",roi:"Medium",mms:"",nextsteps:"Note for 2027 planning"},
+  {id:6,name:"OEUK Security & Resilience Conference 2026",type:"Industry Conference",sector:"Upstream",organiser:"Offshore Energies UK (OEUK)",date:"22 Apr 2026",startDate:"2026-04-22",city:"Aberdeen",link:"https://oeuk.org.uk/events/",cost:"Paid",priority:"Medium",who:"Cyber / Resilience Lead",status:"Completed",attended:"",attendees:"",roi:"Medium",mms:"",nextsteps:""},
+  {id:7,name:"Forecourt Show 2026",type:"Exhibition / Conference",sector:"Downstream",organiser:"William Reed",date:"Apr 2026",startDate:"2026-04-27",city:"Birmingham",link:"https://www.forecourtshow.co.uk/",cost:"Free (attend)",priority:"Medium",who:"Downstream Lead / Retail Fuels SME",status:"Completed",attended:"",attendees:"2",roi:"Medium",mms:"",nextsteps:"Check 2026 date. Send Downstream Lead."},
+  {id:8,name:"OEUK Offshore Wind Briefing",type:"Breakfast Briefing",sector:"Cross Energy",organiser:"Offshore Energies UK (OEUK)",date:"6 May 2026",startDate:"2026-05-06",city:"Aberdeen",link:"https://oeuk.org.uk/events/",cost:"Free / Member",priority:"High",who:"Renewables / Energy Transition Leads",status:"Completed",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:9,name:"Commodity Trading Week Europe 2026",type:"Conference",sector:"Trading",organiser:"Commodity Trading Week",date:"6–7 May 2026",startDate:"2026-05-06",endDate:"2026-05-07",city:"London",link:"https://europe.commoditytradingweek.com",cost:"Paid",priority:"High",who:"Energy Markets Lead / Trading & Risk SME",status:"Completed",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:10,name:"CHEMUK 2026",type:"Exhibition / Conference",sector:"CNR",organiser:"CHEMUK / Easyfairs",date:"20–21 May 2026",startDate:"2026-05-20",endDate:"2026-05-21",city:"Birmingham",link:"https://www.chemicalukexpo.com/",cost:"Free (attend)",priority:"High",who:"Chemicals Lead / Process SME",status:"Completed",attended:"Yes",attendees:"1",roi:"High",mms:"",nextsteps:"Note learnings for 2027"},
+  {id:11,name:"OEUK North Sea CCS & Hydrogen Summit 2026",type:"Summit",sector:"New Energies",organiser:"Offshore Energies UK (OEUK)",date:"1–2 Jun 2026",startDate:"2026-06-01",endDate:"2026-06-02",city:"Edinburgh",link:"https://oeukccsandhydrogensummit.co.uk/",cost:"£540–£828",priority:"High",who:"Energy Transition Lead / CCS SME",status:"Completed",attended:"Yes",attendees:"Cam, Gabi, Liam, Orla",roi:"High",mms:"",nextsteps:""},
+  {id:12,name:"Wood Mackenzie Gas, LNG & Future of Energy",type:"Conference",sector:"Upstream",organiser:"Wood Mackenzie",date:"2–3 Jun 2026",startDate:"2026-06-02",endDate:"2026-06-03",city:"London",link:"https://www.woodmac.com/events/gas-lng-future-energy/",cost:"Paid",priority:"High",who:"Energy Practice Lead / Gas & LNG SME",status:"Completed",attended:"Yes",attendees:"Jamie",roi:"High",mms:"",nextsteps:""},
+  {id:13,name:"Mining World Congress 2026",type:"Conference",sector:"CNR",organiser:"Mining Conferences Ltd",date:"3–4 Jun 2026",startDate:"2026-06-03",endDate:"2026-06-04",city:"London",link:"https://miningconferences.org/",cost:"~£500–£1,000",priority:"High",who:"CNR Lead / Mining SME",status:"Completed",attended:"Yes",attendees:"1",roi:"High",mms:"",nextsteps:"Attend — growing CNR presence needed"},
+  {id:14,name:"Wood Mackenzie Hydrogen Conference 2026",type:"Conference",sector:"New Energies",organiser:"Wood Mackenzie",date:"4 Jun 2026",startDate:"2026-06-04",city:"London",link:"https://www.woodmac.com/events/hydrogen-conference/",cost:"£1,595",priority:"High",who:"Energy Transition Lead / H2 SME",status:"Completed",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:15,name:"EAGE Annual Conference & Exhibition 2026",type:"Global Conference & Exhibition",sector:"Upstream",organiser:"EAGE",date:"8–11 Jun 2026",startDate:"2026-06-08",endDate:"2026-06-11",city:"Aberdeen",link:"https://eageannual.org/",cost:"Paid",priority:"High",who:"Digital Lead / Subsurface SME",status:"Completed",attended:"Yes",attendees:"Emma",roi:"High",mms:"",nextsteps:"Check with Emma"},
+  {id:16,name:"CO₂ Shipping & Terminals Conference 2026",type:"Conference",sector:"New Energies",organiser:"Third-party (via CCSA)",date:"16 Jun 2026",startDate:"2026-06-16",city:"London",link:"https://www.ccsassociation.org/events/",cost:"Paid",priority:"Medium",who:"Energy Transition Lead / CCS SME",status:"Completed",attended:"",attendees:"",roi:"Medium",mms:"",nextsteps:"Send one person to test"},
+  {id:17,name:"NACS Convenience Summit Europe 2026",type:"Conference",sector:"Downstream",organiser:"NACS",date:"16 Jun 2026",startDate:"2026-06-16",city:"Warsaw, Poland",link:"https://www.convenience.org/connect-learn/globalevents/convenience-summit-europe",cost:"€2,395",priority:"High",who:"Downstream / Digital Lead",status:"Completed",attended:"",attendees:"",roi:"High",mms:"",nextsteps:"Coordinate with Brian Gray speaker team"},
+  {id:18,name:"Future Oil & Gas 2026",type:"Digital Conference",sector:"Upstream",organiser:"Cavendish Group Events",date:"24–25 Jun 2026",startDate:"2026-06-24",city:"Aberdeen",link:"https://futureoilgas.com/",cost:"Paid",priority:"High",who:"Digital / AI Lead / Technology SME",status:"Completed",attended:"",attendees:"Working to identify",roi:"High",mms:"",nextsteps:"Potential sponsorship — get James in to present/keynote"},
+  {id:19,name:"SPE E3S Energy Economics & Evaluation Symposium 2026",type:"Conference",sector:"Upstream",organiser:"SPE",date:"2 Jul 2026",startDate:"2026-07-02",city:"London",link:"https://connect.spe.org/management/events/e3s-2026uk",cost:"£75",priority:"High",who:"Energy practitioners / CF&EV Team",status:"Completed",attended:"",attendees:"Working to identify",roi:"High",mms:"",nextsteps:"Identify attendees and register"},
+  {id:20,name:"OEUK Energy Safety Awards 2026",type:"Industry Awards",sector:"Upstream",organiser:"Offshore Energies UK (OEUK)",date:"20 Aug 2026",startDate:"2026-08-20",city:"Aberdeen",link:"https://oeuk.org.uk/events/",cost:"Paid",priority:"Low",who:"HSE Lead / Aberdeen office representative",status:"Completed",attended:"",attendees:"",roi:"Low",mms:"",nextsteps:""},
+  {id:21,name:"OEUK Economic Report — Aberdeen Briefing",type:"Breakfast Briefing",sector:"Upstream",organiser:"Offshore Energies UK (OEUK)",date:"15 Sep 2026",startDate:"2026-09-15",city:"Aberdeen",link:"https://oeuk.org.uk/events/",cost:"Free / Member",priority:"Medium",who:"Scotland Regional Team",status:"Completed",attended:"",attendees:"",roi:"Medium",mms:"",nextsteps:""},
+  {id:22,name:"OEUK Economic Report — London Briefing",type:"Breakfast Briefing",sector:"Upstream",organiser:"Offshore Energies UK (OEUK)",date:"17 Sep 2026",startDate:"2026-09-17",city:"London",link:"https://oeuk.org.uk/events/",cost:"Free / Member",priority:"Medium",who:"Energy Practice Lead",status:"Completed",attended:"",attendees:"",roi:"Medium",mms:"",nextsteps:""},
+  {id:23,name:"World CCUS Conference (WCCUS) 2026",type:"Global Conference",sector:"New Energies",organiser:"WCCUS",date:"21–25 Sep 2026",startDate:"2026-09-21",endDate:"2026-09-25",city:"Edinburgh",link:"https://www.wccus.org/",cost:"Paid",priority:"High",who:"Energy Transition Lead / CCS SME",status:"Completed",attended:"",attendees:"1",roi:"High",mms:"",nextsteps:"Could we sponsor and have stronger presence"},
+  {id:24,name:"Carbon Capture Global Summit (CCGS) 2026",type:"Summit",sector:"New Energies",organiser:"Carbon Capture Global Summit",date:"22–23 Sep 2026",startDate:"2026-09-22",endDate:"2026-09-23",city:"London",link:"https://www.carboncaptureglobalsummit.com/",cost:"~£1,500–£2,000",priority:"High",who:"Energy Transition Lead / CCS SME",status:"Completed",attended:"",attendees:"",roi:"High",mms:"",nextsteps:"Attend — explore speaking opportunity"},
+  {id:25,name:"Energy Trading Week Europe 2026",type:"Conference",sector:"Trading",organiser:"CTRM Center",date:"24–25 Sep 2026",startDate:"2026-09-24",endDate:"2026-09-25",city:"London",link:"https://europe.energytradingweek.com/",cost:"Paid",priority:"Medium",who:"Energy Markets Lead / Trading SME",status:"Completed",attended:"",attendees:"1",roi:"Medium",mms:"",nextsteps:"Flag for James"},
+  {id:27,name:"SPE Aberdeen CO₂ Storage Conference 2026",type:"Technical Conference",sector:"New Energies",organiser:"SPE Aberdeen",date:"6–7 Oct 2026",startDate:"2026-10-06",endDate:"2026-10-07",city:"Aberdeen",link:"https://www.spe-aberdeen.org/events",cost:"Paid",priority:"High",who:"Energy Transition Lead / CCS SME",status:"Completed",attended:"",attendees:"1",roi:"High",mms:"",nextsteps:"Need more targeted CCUS approach"},
+  {id:28,name:"CCUS 2026 — CCSA Flagship Conference",type:"Conference",sector:"New Energies",organiser:"CCSA",date:"13–14 Oct 2026",startDate:"2026-10-13",endDate:"2026-10-14",city:"London",link:"https://www.ccus.events/",cost:"Paid",priority:"High",who:"Energy Transition Lead / CCS SME / BD Director",status:"Upcoming",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:29,name:"forecourttech '26",type:"Conference",sector:"Downstream",organiser:"SAB Events Europe",date:"14 Oct 2026",startDate:"2026-10-14",city:"Alicante",link:"https://forecourttech.com/convention2026/",cost:"Paid",priority:"Medium",who:"Downstream / Retail Lead / Digital SME",status:"Upcoming",attended:"",attendees:"",roi:"Medium",mms:"",nextsteps:"Assess relevance"},
+  {id:30,name:"FT Metals & Mining Summit 2026",type:"Summit",sector:"CNR",organiser:"Financial Times (FT Live)",date:"15–16 Oct 2026",startDate:"2026-10-15",endDate:"2026-10-16",city:"London",link:"https://live.ft.com/Events/2026/FT-Metals-and-Mining-Summit-2026",cost:"£219–£1,629",priority:"High",who:"CNR Lead / Senior Partner",status:"Upcoming",attended:"",attendees:"1",roi:"High",mms:"",nextsteps:"Attend — explore speaking"},
+  {id:31,name:"LME Week 2026 — Metals Seminar & Dinner",type:"Conference / Dinner",sector:"CNR",organiser:"London Metal Exchange (LME)",date:"19–23 Oct 2026",startDate:"2026-10-19",endDate:"2026-10-23",city:"London",link:"https://www.lme.com/en/events/lme-week",cost:"Paid / Invite",priority:"High",who:"CNR Lead / Metals SME / Senior Partner",status:"Upcoming",attended:"",attendees:"1",roi:"High",mms:"",nextsteps:"Attend seminar + seek dinner invite"},
+  {id:33,name:"Energy Intelligence Forum 2026",type:"Executive Forum",sector:"Upstream",organiser:"Energy Intelligence",date:"Autumn 2026 (TBC)",startDate:"2026-10-20",city:"London",link:"https://www.energyintelligenceforum.com/2026/",cost:"£3,800+",priority:"High",who:"Senior Partner / Managing Director",status:"Upcoming",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:34,name:"Mining & Critical Minerals Europe 2026",type:"Conference / Exhibition",sector:"CNR",organiser:"Mining & Critical Minerals Europe",date:"20–21 Oct 2026",startDate:"2026-10-20",endDate:"2026-10-21",city:"London",link:"https://www.miningeuropeconvention.com/",cost:"~£500–£1,000",priority:"High",who:"CNR Lead / Mining SME",status:"Upcoming",attended:"",attendees:"1",roi:"High",mms:"",nextsteps:"Attend — growing strategic relevance for CNR"},
+  {id:35,name:"Wood Mackenzie LME Forum 2026",type:"Forum",sector:"CNR",organiser:"Wood Mackenzie",date:"21 Oct 2026",startDate:"2026-10-21",city:"London",link:"https://www.woodmac.com/events/lme-forum/",cost:"Paid (invite-based)",priority:"High",who:"CNR Lead / Metals SME / Energy Transition Lead",status:"Upcoming",attended:"",attendees:"1",roi:"High",mms:"",nextsteps:"Attend — strong analytical + CNR client audience"},
+  {id:36,name:"ICA Industry Leaders Forum 2026",type:"Conference",sector:"CNR",organiser:"International Copper Association",date:"22 Oct 2026",startDate:"2026-10-22",city:"London",link:"https://internationalcopper.org/event/save-the-date-ica-industry-leaders-forum-2026/",cost:"Free",priority:"Medium",who:"Mining focused staff",status:"Upcoming",attended:"",attendees:"",roi:"Medium",mms:"",nextsteps:"Monitor and register"},
+  {id:37,name:"APEA Live 2026 — Downstream Fuel & Forecourt Conference",type:"Conference / Exhibition / Awards",sector:"Downstream",organiser:"APEA",date:"12 Nov 2026",startDate:"2026-11-12",endDate:"2026-11-12",city:"Milton Keynes",link:"https://www.apealive.co.uk/2026/",cost:"Free (attend)",priority:"Medium",who:"Downstream Lead / Fuels Industry SME",status:"Upcoming",attended:"",attendees:"2",roi:"Medium",mms:"",nextsteps:"Assess relevance — send Downstream Lead"},
+  {id:38,name:"London Mining Week 2026 — Resourcing Tomorrow",type:"Conference",sector:"CNR",organiser:"Beacon Events",date:"27 Nov 2026",startDate:"2026-11-27",city:"London",link:"https://resourcingtomorrow.com",cost:"Paid",priority:"High",who:"CNR / Natural Resources Lead",status:"Upcoming",attended:"",attendees:"",roi:"High",mms:"",nextsteps:"Register delegates — explore speaking"},
+  {id:39,name:"Resourcing Tomorrow / Mines & Money London 2026",type:"Conference / Exhibition",sector:"CNR",organiser:"Mines & Money / Beacon Events",date:"1–3 Dec 2026",startDate:"2026-12-01",endDate:"2026-12-03",city:"London",link:"https://resourcingtomorrow.com/",cost:"~£800–£1,500",priority:"High",who:"CNR Lead / Mining SME / Senior Partner",status:"Upcoming",attended:"",attendees:"1",roi:"High",mms:"",nextsteps:"Attend — key CNR BD event. Book now."},
+  {id:40,name:"Critical Minerals Association UK — Annual Conference 2026",type:"Conference",sector:"CNR",organiser:"Critical Minerals Association",date:"1 Dec 2026",startDate:"2026-12-01",city:"London",link:"https://criticalmineral.org/",cost:"~£300–£600",priority:"High",who:"CNR Lead / Critical Minerals SME",status:"Upcoming",attended:"",attendees:"1",roi:"High",mms:"",nextsteps:"Attend as part of London Mining Week"},
+  {id:41,name:"OEUK Subsurface & Wells Conference 2026",type:"Industry Conference",sector:"Upstream",organiser:"Offshore Energies UK (OEUK)",date:"8 Dec 2026",startDate:"2026-12-08",city:"Aberdeen",link:"https://oeuk.org.uk/events/",cost:"Paid",priority:"High",who:"Subsurface Lead / Wells SME",status:"Upcoming",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:42,name:"Energy Council London 2026",type:"Executive Forum",sector:"Upstream",organiser:"Energy Council",date:"9–10 Dec 2026",startDate:"2026-12-09",city:"London",link:"https://energycouncil.com/event-pages/london/",cost:"Paid / Sponsor",priority:"High",who:"Senior Partner / BD Director",status:"Upcoming",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:43,name:"OEUK Annual Conference & Dinner 2026",type:"Annual Industry Dinner",sector:"Upstream",organiser:"Offshore Energies UK (OEUK)",date:"Q4 2026 (TBC)",startDate:"2026-12-10",city:"Aberdeen",link:"https://oeuk.org.uk/events/",cost:"Paid / Sponsor",priority:"High",who:"Practice Lead / Senior Partner / Managing Director",status:"Upcoming",attended:"",attendees:"",roi:"High",mms:"",nextsteps:""},
+  {id:44,name:"ICIS World Base Oils & Lubricants Conference 2027",type:"Conference",sector:"Downstream",organiser:"ICIS",date:"2–5 Feb 2027",startDate:"2027-02-02",endDate:"2027-02-05",city:"London",link:"https://events.icis.com/world-base-oils",cost:"Paid",priority:"High",who:"Downstream Lead / Refining SME",status:"Future (2027)",attended:"",attendees:"1",roi:"High",mms:"",nextsteps:"Plan ahead — explore speaking slot"},
+  {id:45,name:"CERAWeek by S&P Global",type:"Conference",sector:"Cross Energy",organiser:"S&P Global",date:"8–12 Mar 2027",startDate:"2027-03-08",endDate:"2027-03-12",city:"Houston",link:"https://ceraweek.com",cost:"Paid",priority:"High",who:"C-level (Julie — OCEO request)",status:"Future (2027)",attended:"",attendees:"",roi:"High",mms:"",nextsteps:"Confirm Julie's attendance"},
+  {id:46,name:"Hydrogen UK Annual Conference & Awards 2027",type:"Conference",sector:"New Energies",organiser:"Hydrogen UK",date:"Mar 2027 (TBC)",startDate:"2027-03-16",city:"Birmingham",link:"https://hydrogen-uk.org/events/",cost:"~£500–£800",priority:"Medium",who:"H2 SME / Energy Transition Lead",status:"Future (2027)",attended:"",attendees:"2",roi:"Medium",mms:"",nextsteps:"Monitor — book early"},
+  {id:47,name:"CHEMUK 2027 — Chemicals & Process Industries Expo",type:"Exhibition / Conference",sector:"Downstream",organiser:"CHEMUK / Easyfairs",date:"May 2027 (TBC)",startDate:"2027-05-19",endDate:"2027-05-21",city:"Birmingham",link:"https://www.chemicalukexpo.com/",cost:"Free (attend)",priority:"High",who:"Chemicals Lead / CNR Lead",status:"Future (2027)",attended:"",attendees:"1",roi:"High",mms:"",nextsteps:"Plan ahead based on 2026 learnings"},
+  {id:48,name:"Commodity Trading Week Europe 2027",type:"Conference",sector:"Trading",organiser:"Commodities People",date:"19–20 May 2027",startDate:"2027-05-19",endDate:"2027-05-20",city:"London",link:"https://europe.commoditytradingweek.com",cost:"Paid",priority:"High",who:"Energy Practice Lead / Risk & Trading SMEs",status:"Future (2027)",attended:"",attendees:"",roi:"High",mms:"",nextsteps:"Consider speaking slot"},
+  {id:49,name:"SPE Offshore Europe 2027",type:"Global Conference & Exhibition",sector:"Upstream",organiser:"SPE / RX",date:"7–9 Sep 2027",startDate:"2027-09-07",endDate:"2027-09-09",city:"Aberdeen",link:"https://www.offshore-europe.co.uk/",cost:"Paid – premium",priority:"High",who:"Full Team",status:"Future (2027)",attended:"",attendees:"2",roi:"High",mms:"",nextsteps:"Planning must begin now — target speaking slots"},
+];
+
+let surveys = [];
+try { surveys = JSON.parse(localStorage.getItem('ecnr_surveys') || '[]'); } catch(e) { surveys = []; }
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function showView(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  const btns = document.querySelectorAll('nav button');
+  const idx = ['summary','tracker','gantt','survey','responses','add'];
+  btns[idx.indexOf(v)]?.classList.add('active');
+  if(v==='summary') renderSummary();
+  if(v==='tracker') renderTable();
+  if(v==='gantt') renderGantt();
+  if(v==='survey') populateSurveyEventList();
+  if(v==='responses') renderResponses();
+}
+
+// ═══════════════════════════════════════════
+// SUMMARY
+// ═══════════════════════════════════════════
+function renderSummary() {
+  const total = events.length;
+  const completed = events.filter(e=>e.status==='Completed').length;
+  const upcoming = events.filter(e=>e.status==='Upcoming').length;
+  const high = events.filter(e=>e.priority==='High').length;
+
+  document.getElementById('summary-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-val accent">${total}</div><div class="stat-label">Total events tracked</div></div>
+    <div class="stat-card"><div class="stat-val">${completed}</div><div class="stat-label">Completed</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--status-upcoming)">${upcoming}</div><div class="stat-label">Upcoming this year</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--high)">${high}</div><div class="stat-label">High priority events</div></div>
+  `;
+
+  // Sector bars
+  const sectors = {};
+  events.forEach(e => { sectors[e.sector] = (sectors[e.sector]||0)+1; });
+  const maxS = Math.max(...Object.values(sectors));
+  const sectorColors = {
+    'Upstream':'var(--upstream)','New Energies':'var(--newenergy)','Downstream':'var(--downstream)',
+    'Trading':'var(--trading)','CNR':'var(--cnr)','Cross Energy':'var(--cross)'
+  };
+  document.getElementById('sector-bars').innerHTML = Object.entries(sectors)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([s,n])=>`
+      <div class="sector-bar-row">
+        <div class="sector-bar-label">${s}</div>
+        <div class="sector-bar-track"><div class="sector-bar-fill" style="width:${(n/maxS*100).toFixed(0)}%;background:${sectorColors[s]||'var(--accent)'}"></div></div>
+        <div class="sector-bar-count">${n}</div>
+      </div>`).join('');
+
+  // Donut
+  const priorities = {High:0,Medium:0,Low:0};
+  events.forEach(e=>{ if(priorities[e.priority]!==undefined) priorities[e.priority]++; });
+  const pColors = {High:'#a100ff',Medium:'#1d6fa4',Low:'#b0bec5'};
+  const totalP = priorities.High+priorities.Medium+priorities.Low;
+  let offset = 0;
+  const cx=60,cy=60,r=48,stroke=16;
+  const circ = 2*Math.PI*r;
+  let arcs = '';
+  Object.entries(priorities).forEach(([p,n])=>{
+    const frac = n/totalP;
+    const dash = frac*circ;
+    arcs += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${pColors[p]}" stroke-width="${stroke}"
+      stroke-dasharray="${dash} ${circ-dash}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})" opacity="0.9"/>`;
+    offset += dash;
+  });
+  document.getElementById('donut-svg').innerHTML = arcs +
+    `<text x="${cx}" y="${cy+5}" text-anchor="middle" font-size="18" font-weight="700" fill="#0f1923">${totalP}</text>`;
+  document.getElementById('donut-legend').innerHTML = Object.entries(priorities).map(([p,n])=>
+    `<div class="legend-item"><div class="legend-dot" style="background:${pColors[p]}"></div><span style="font-weight:500">${p}</span> — ${n}</div>`
+  ).join('');
+
+  // Upcoming list
+  const today = new Date();
+  const upcoming12 = events.filter(e => {
+    const d = new Date(e.startDate);
+    const diff = (d-today)/(1000*60*60*24);
+    return diff >= 0 && diff <= 90;
+  }).sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
+
+  document.getElementById('upcoming-list').innerHTML = upcoming12.length === 0
+    ? '<p style="color:var(--ink-light);font-size:13px;padding:16px 0">No events in the next 12 weeks.</p>'
+    : `<table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:4px">
+        <thead><tr>${['Event','Sector','City','Date','Priority'].map(h=>`<th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--border);font-size:11.5px;color:var(--ink-light);font-weight:500">${h}</th>`).join('')}</tr></thead>
+        <tbody>${upcoming12.map(e=>`<tr>
+          <td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:500"><a href="${e.link}" target="_blank" style="color:var(--accent);text-decoration:none">${e.name}</a></td>
+          <td style="padding:8px 10px;border-bottom:1px solid var(--border)">${sectorTag(e.sector)}</td>
+          <td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--ink-mid)">${e.city}</td>
+          <td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--ink-mid)">${e.date}</td>
+          <td style="padding:8px 10px;border-bottom:1px solid var(--border)">${priorityBadge(e.priority)}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+}
+
+// ═══════════════════════════════════════════
+// TABLE
+// ═══════════════════════════════════════════
+function sectorTag(s) {
+  const map = {'Upstream':'upstream','New Energies':'newenergy','Downstream':'downstream','Trading':'trading','CNR':'cnr','Cross Energy':'cross'};
+  return `<span class="tag tag-${map[s]||'upstream'}">${s}</span>`;
+}
+function priorityBadge(p) {
+  const map = {High:'badge-high',Medium:'badge-medium',Low:'badge-low'};
+  return `<span class="${map[p]||'badge-low'}">${p||'—'}</span>`;
+}
+function statusDot(s) {
+  if(s==='Completed') return `<span class="status-dot status-done">Done</span>`;
+  if(s==='Upcoming') return `<span class="status-dot status-upcoming">Upcoming</span>`;
+  return `<span class="status-dot status-future">2027+</span>`;
+}
+
+function renderTable() {
+  const q = (document.getElementById('search-input')?.value||'').toLowerCase();
+  const sec = document.getElementById('sector-filter')?.value||'';
+  const pri = document.getElementById('priority-filter')?.value||'';
+  const sta = document.getElementById('status-filter')?.value||'';
+  const cit = document.getElementById('city-filter')?.value||'';
+
+  // Populate city filter
+  const cities = [...new Set(events.map(e=>e.city))].sort();
+  const cityEl = document.getElementById('city-filter');
+  if(cityEl && cityEl.options.length <= 1) {
+    cities.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; cityEl.appendChild(o); });
+  }
+
+  const filtered = events.filter(e => {
+    if(q && !e.name.toLowerCase().includes(q) && !e.organiser.toLowerCase().includes(q)) return false;
+    if(sec && e.sector!==sec) return false;
+    if(pri && e.priority!==pri) return false;
+    if(sta && e.status!==sta) return false;
+    if(cit && e.city!==cit) return false;
+    return true;
+  });
+
+  document.getElementById('results-count').textContent = `Showing ${filtered.length} of ${events.length} events`;
+
+  document.getElementById('event-tbody').innerHTML = filtered.map(e=>`
+    <tr id="row-${e.id}">
+      <td style="color:var(--ink-light)">${e.id}</td>
+      <td class="cell-event-name"><a href="${e.link}" target="_blank">${e.name}</a></td>
+      <td>${sectorTag(e.sector)}</td>
+      <td style="color:var(--ink-mid)">${e.type}</td>
+      <td style="white-space:nowrap;color:var(--ink-mid)">${e.date}</td>
+      <td style="color:var(--ink-mid)">${e.city}</td>
+      <td>${priorityBadge(e.priority)}</td>
+      <td>${statusDot(e.status)}</td>
+      <td style="text-align:center">${e.attended==='Yes'?'<span style="color:var(--newenergy);font-weight:600">✓</span>':'<span style="color:var(--border)">–</span>'}</td>
+      <td style="color:var(--ink-mid);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.attendees||'—'}</td>
+      <td style="color:var(--ink-mid)">${e.mms||'—'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="startSurvey(${e.id})">Debrief</button>
+        <button class="btn btn-sm" style="background:none;border:1px solid #fca5a5;color:#dc2626;margin-left:4px" onclick="deleteEvent(${e.id})" title="Delete event">✕</button>
+      </td>
+    </tr>`).join('');
+}
+
+function deleteEvent(id) {
+  const e = events.find(ev => ev.id === id);
+  if (!e) return;
+  if (!confirm(`Delete "${e.name}"?\n\nThis cannot be undone.`)) return;
+  const idx = events.findIndex(ev => ev.id === id);
+  events.splice(idx, 1);
+  // Animate row out
+  const row = document.getElementById('row-' + id);
+  if (row) {
+    row.style.transition = 'opacity .2s, background .2s';
+    row.style.background = '#fef2f2';
+    row.style.opacity = '0';
+    setTimeout(() => renderTable(), 220);
+  } else {
+    renderTable();
+  }
+  showToast(`"${e.name}" deleted.`, 'success');
+}
+
+// ═══════════════════════════════════════════
+// GANTT — Canvas renderer with zoom & day precision
+// ═══════════════════════════════════════════
+
+const SECTOR_COLORS = {
+  'Upstream':    '#1d6fa4',
+  'New Energies':'#1a8c5a',
+  'Downstream':  '#d4670d',
+  'Trading':     '#7a3fb5',
+  'CNR':         '#b5503f',
+  'Cross Energy':'#1d6fa4',
+};
+
+// Layout constants
+const G = {
+  labelW: 240,    // left label column width
+  rowH: 34,       // row height
+  barH: 18,       // event bar height
+  headerH: 52,    // header height (month + day strip)
+  monthH: 28,     // month band in header
+  dayH: 24,       // day band in header
+  dpr: window.devicePixelRatio || 1,
+  zoomLevel: 3,   // px per day (starts at ~3, can go 1–30)
+  ganttEvents: [],
+  rangeStart: null,  // Date
+  rangeEnd: null,    // Date
+};
+
+function daysBetween(a, b) {
+  return Math.round((b - a) / 86400000);
+}
+
+function dateToX(d) {
+  return G.labelW + daysBetween(G.rangeStart, d) * G.zoomLevel;
+}
+
+function ganttZoom(delta) {
+  const slider = document.getElementById('zoom-slider');
+  const newVal = Math.min(10, Math.max(1, parseFloat(slider.value) + delta * 0.5));
+  slider.value = newVal;
+  ganttZoomSet(newVal);
+}
+
+function ganttZoomSet(val) {
+  // Map slider 1–10 → px/day 1–30 (exponential feel)
+  G.zoomLevel = Math.pow(val / 1, 1.6) * 1.1;
+  document.getElementById('zoom-slider').value = val;
+  const labels = ['Day','2-Day','Week','2-Week','Month','2-Month'];
+  const idx = Math.min(5, Math.floor((val-1)/1.5));
+  document.getElementById('zoom-display').textContent = labels[idx] + ' view';
+  drawGantt();
+}
+
+function ganttScrollToday() {
+  const scroll = document.getElementById('gantt-scroll');
+  const todayX = dateToX(new Date());
+  const visibleW = scroll.clientWidth;
+  scroll.scrollLeft = Math.max(0, todayX - visibleW / 2);
+}
+
+function renderGantt() {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  // Filter to upcoming + future
+  const upcoming = events.filter(e => e.status === 'Upcoming' || e.status === 'Future (2027)');
+  G.ganttEvents = [...upcoming].sort((a,b) => new Date(a.startDate) - new Date(b.startDate));
+
+  if (!G.ganttEvents.length) return;
+
+  // Range: from today - 7 days to last event end + 30 days
+  G.rangeStart = new Date(today);
+  G.rangeStart.setDate(G.rangeStart.getDate() - 7);
+
+  const lastDate = new Date(G.ganttEvents[G.ganttEvents.length-1].startDate);
+  G.rangeEnd = new Date(lastDate);
+  G.rangeEnd.setDate(G.rangeEnd.getDate() + 30);
+
+  // Attach mouse events once
+  const bodyCanvas = document.getElementById('gantt-body-canvas');
+  bodyCanvas.onmousemove = ganttMouseMove;
+  bodyCanvas.onmouseleave = () => { document.getElementById('gantt-tooltip').style.display = 'none'; };
+  bodyCanvas.onclick = ganttClick;
+
+  // Drag to scroll
+  const scroll = document.getElementById('gantt-scroll');
+  let isDragging = false, dragStartX = 0, dragScrollLeft = 0;
+  scroll.onmousedown = e => { isDragging=true; dragStartX=e.pageX-scroll.offsetLeft; dragScrollLeft=scroll.scrollLeft; };
+  scroll.onmousemove = e => { if(!isDragging) return; e.preventDefault(); scroll.scrollLeft = dragScrollLeft-(e.pageX-scroll.offsetLeft-dragStartX); };
+  scroll.onmouseup = () => { isDragging=false; };
+  scroll.onmouseleave = () => { isDragging=false; };
+
+  drawGantt();
+
+  // After initial draw, scroll so today is visible
+  requestAnimationFrame(() => ganttScrollToday());
+}
+
+function drawGantt() {
+  if (!G.ganttEvents.length) return;
+
+  const totalDays = daysBetween(G.rangeStart, G.rangeEnd);
+  const totalW = G.labelW + totalDays * G.zoomLevel;
+  const totalH = G.ganttEvents.length * G.rowH + 2;
+  const dpr = G.dpr;
+
+  // Size header canvas
+  const hCanvas = document.getElementById('gantt-header-canvas');
+  hCanvas.width = totalW * dpr;
+  hCanvas.height = G.headerH * dpr;
+  hCanvas.style.width = totalW + 'px';
+  hCanvas.style.height = G.headerH + 'px';
+
+  // Size body canvas
+  const bCanvas = document.getElementById('gantt-body-canvas');
+  bCanvas.width = totalW * dpr;
+  bCanvas.height = totalH * dpr;
+  bCanvas.style.width = totalW + 'px';
+  bCanvas.style.height = totalH + 'px';
+
+  const hCtx = hCanvas.getContext('2d');
+  const bCtx = bCanvas.getContext('2d');
+  hCtx.scale(dpr, dpr);
+  bCtx.scale(dpr, dpr);
+
+  drawHeader(hCtx, totalW);
+  drawBody(bCtx, totalW, totalH);
+}
+
+function drawHeader(ctx, totalW) {
+  const H = G.headerH, mH = G.monthH, dH = G.dayH;
+
+  // Background
+  ctx.fillStyle = '#1a2733';
+  ctx.fillRect(0, 0, totalW, H);
+
+  // Label column bg
+  ctx.fillStyle = '#0f1923';
+  ctx.fillRect(0, 0, G.labelW, H);
+
+  // Label text
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.font = '500 11px Inter, system-ui, sans-serif';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('EVENT', 18, mH / 2);
+  ctx.fillText('', 18, mH + dH / 2);
+
+  // Iterate months in range
+  let cur = new Date(G.rangeStart.getFullYear(), G.rangeStart.getMonth(), 1);
+  const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  while (cur <= G.rangeEnd) {
+    const year = cur.getFullYear();
+    const month = cur.getMonth();
+    const mStart = new Date(year, month, 1);
+    const mEnd = new Date(year, month+1, 1);
+    const xStart = Math.max(G.labelW, dateToX(mStart));
+    const xEnd = Math.min(totalW, dateToX(mEnd));
+    if (xEnd <= G.labelW) { cur = mEnd; continue; }
+
+    const label = MONTH_NAMES[month] + (year === 2027 ? " '27" : '');
+
+    // Month band
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(xStart, 0); ctx.lineTo(xStart, mH); ctx.stroke();
+
+    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.font = '600 11px Inter, system-ui, sans-serif';
+    ctx.textBaseline = 'middle';
+    const mLabelX = xStart + (xEnd - xStart) / 2;
+    ctx.fillText(label, mLabelX, mH / 2);
+    ctx.textAlign = 'left';
+
+    // Day band — only if zoom is high enough
+    const daysInM = new Date(year, month+1, 0).getDate();
+    const dayPx = G.zoomLevel;
+
+    if (dayPx >= 5) {
+      for (let d = 1; d <= daysInM; d++) {
+        const dayDate = new Date(year, month, d);
+        if (dayDate < G.rangeStart || dayDate > G.rangeEnd) continue;
+        const dx = dateToX(dayDate);
+        if (dx < G.labelW) continue;
+
+        // Day separator
+        const isWeekend = dayDate.getDay() === 0 || dayDate.getDay() === 6;
+        ctx.strokeStyle = isWeekend ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.05)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(dx, mH); ctx.lineTo(dx, mH+dH); ctx.stroke();
+
+        // Day label — show if zoom > 14
+        if (dayPx >= 14 || (dayPx >= 8 && d % 5 === 1) || (dayPx >= 5 && (d===1||d===8||d===15||d===22))) {
+          ctx.fillStyle = isWeekend ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.55)';
+          ctx.font = '400 9px Inter, system-ui, sans-serif';
+          ctx.textBaseline = 'middle';
+          ctx.textAlign = 'center';
+          ctx.fillText(d, dx + dayPx/2, mH + dH/2);
+        }
+      }
+    } else {
+      // Just draw week markers
+      for (let d = 1; d <= daysInM; d += 7) {
+        const dx = dateToX(new Date(year, month, d));
+        if (dx < G.labelW) continue;
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(dx, mH); ctx.lineTo(dx, mH+dH); ctx.stroke();
+      }
+    }
+
+    // Month separator line (full height)
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(xStart, mH); ctx.lineTo(xStart, H); ctx.stroke();
+
+    cur = mEnd;
+  }
+
+  // Today line in header
+  const today = new Date(); today.setHours(0,0,0,0);
+  const todayX = dateToX(today);
+  if (todayX >= G.labelW && todayX <= totalW) {
+    ctx.fillStyle = '#a100ff';
+    ctx.fillRect(todayX - 1, 0, 2, H);
+    // TODAY label
+    ctx.fillStyle = '#a100ff';
+    ctx.beginPath();
+    const tw = 36, th = 16, tr = 3;
+    roundRect(ctx, todayX - tw/2, 4, tw, th, tr);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = '700 9px Inter, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('TODAY', todayX, 4 + th/2);
+  }
+}
+
+function drawBody(ctx, totalW, totalH) {
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  // Background stripes
+  G.ganttEvents.forEach((e, i) => {
+    const y = i * G.rowH;
+    ctx.fillStyle = i % 2 === 0 ? '#fafbfc' : '#ffffff';
+    ctx.fillRect(0, y, totalW, G.rowH);
+  });
+
+  // Grid lines — month boundaries
+  let cur = new Date(G.rangeStart.getFullYear(), G.rangeStart.getMonth(), 1);
+  while (cur <= G.rangeEnd) {
+    const dx = dateToX(cur);
+    if (dx >= G.labelW) {
+      ctx.strokeStyle = 'rgba(221,228,234,0.8)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(dx, 0); ctx.lineTo(dx, totalH); ctx.stroke();
+    }
+    cur = new Date(cur.getFullYear(), cur.getMonth()+1, 1);
+  }
+
+  // Weekend shading if zoomed in enough
+  if (G.zoomLevel >= 5) {
+    let d = new Date(G.rangeStart);
+    while (d <= G.rangeEnd) {
+      const dow = d.getDay();
+      if (dow === 0 || dow === 6) {
+        const dx = dateToX(d);
+        if (dx >= G.labelW) {
+          ctx.fillStyle = 'rgba(0,0,0,0.025)';
+          ctx.fillRect(dx, 0, G.zoomLevel, totalH);
+        }
+      }
+      d = new Date(d.getTime() + 86400000);
+    }
+  }
+
+  // Label column bg
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, G.labelW, totalH);
+  ctx.strokeStyle = '#dde4ea';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(G.labelW, 0); ctx.lineTo(G.labelW, totalH); ctx.stroke();
+
+  // Today column highlight
+  const todayX = dateToX(today);
+  if (todayX >= G.labelW && todayX <= totalW) {
+    ctx.fillStyle = 'rgba(161,0,255,0.04)';
+    ctx.fillRect(todayX, 0, G.zoomLevel, totalH);
+    ctx.strokeStyle = '#a100ff';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(todayX, 0); ctx.lineTo(todayX, totalH); ctx.stroke();
+  }
+
+  // Events
+  G.ganttEvents.forEach((e, i) => {
+    const y = i * G.rowH;
+    const barY = y + (G.rowH - G.barH) / 2;
+
+    // Row separator
+    ctx.strokeStyle = '#edf0f3';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, y + G.rowH); ctx.lineTo(totalW, y + G.rowH); ctx.stroke();
+
+    // Event name label
+    const isFuture = e.status === 'Future (2027)';
+    ctx.fillStyle = '#3d4f5e';
+    ctx.font = '500 12px Inter, system-ui, sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    const nameMaxW = G.labelW - 28;
+    const displayName = truncateText(ctx, e.name, nameMaxW);
+    ctx.fillText(displayName, 12, y + G.rowH/2);
+
+    // Priority dot
+    const prioColor = e.priority==='High' ? '#a100ff' : e.priority==='Medium' ? '#1d6fa4' : '#b0bec5';
+    ctx.fillStyle = prioColor;
+    ctx.beginPath();
+    ctx.arc(G.labelW - 10, y + G.rowH/2, 4, 0, Math.PI*2);
+    ctx.fill();
+
+    // Event bar
+    const startDate = new Date(e.startDate);
+    const endDate = e.endDate ? new Date(e.endDate) : new Date(e.startDate);
+
+    const barX = dateToX(startDate);
+    const barEndX = dateToX(new Date(endDate.getTime() + 86400000)); // include end day
+    const barW = Math.max(barEndX - barX, G.zoomLevel * 0.8, 8);
+
+    const color = isFuture ? '#cfd8dc' : (SECTOR_COLORS[e.sector] || '#7d93a3');
+    ctx.fillStyle = color;
+    roundRect(ctx, barX, barY, barW, G.barH, 3);
+    ctx.fill();
+
+    // Bar label (abbreviation) if wide enough
+    const abbrev = makeAbbr(e.name);
+    ctx.fillStyle = isFuture ? '#5a7080' : 'rgba(255,255,255,0.95)';
+    ctx.font = '600 10px Inter, system-ui, sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    if (barW > 20) {
+      const labelInBar = truncateText(ctx, barW > 60 ? e.name : abbrev, barW - 8);
+      ctx.fillText(labelInBar, barX + barW/2, barY + G.barH/2);
+    }
+  });
+
+  // Store event bar positions for hit testing
+  G._barRects = G.ganttEvents.map((e, i) => {
+    const startDate = new Date(e.startDate);
+    const endDate = e.endDate ? new Date(e.endDate) : new Date(e.startDate);
+    const barX = dateToX(startDate);
+    const barEndX = dateToX(new Date(endDate.getTime() + 86400000));
+    const barW = Math.max(barEndX - barX, G.zoomLevel * 0.8, 8);
+    const barY = i * G.rowH + (G.rowH - G.barH) / 2;
+    return { e, x: barX, y: barY, w: barW, h: G.barH, row: i };
+  });
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y); ctx.arcTo(x+w, y, x+w, y+r, r);
+  ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w, y+h, x+w-r, y+h, r);
+  ctx.lineTo(x+r, y+h); ctx.arcTo(x, y+h, x, y+h-r, r);
+  ctx.lineTo(x, y+r); ctx.arcTo(x, y, x+r, y, r);
+  ctx.closePath();
+}
+
+function truncateText(ctx, text, maxW) {
+  if (ctx.measureText(text).width <= maxW) return text;
+  let t = text;
+  while (t.length > 1 && ctx.measureText(t+'…').width > maxW) t = t.slice(0,-1);
+  return t + '…';
+}
+
+function makeAbbr(name) {
+  const words = name.replace(/[()&\-–]/g,' ').split(/\s+/).filter(Boolean);
+  if (words.length === 1) return name.substring(0,4).toUpperCase();
+  return words.slice(0,3).map(w=>w[0]).join('').toUpperCase();
+}
+
+function ganttMouseMove(evt) {
+  const canvas = document.getElementById('gantt-body-canvas');
+  const rect = canvas.getBoundingClientRect();
+  const mx = evt.clientX - rect.left;
+  const my = evt.clientY - rect.top;
+  const tooltip = document.getElementById('gantt-tooltip');
+
+  if (!G._barRects) return;
+  const hit = G._barRects.find(r => mx >= r.x && mx <= r.x+r.w && my >= r.y && my <= r.y+r.h);
+  if (hit) {
+    const e = hit.e;
+    tooltip.innerHTML = `<strong>${e.name}</strong>
+      <div class="tt-meta">${e.date} · ${e.city}</div>
+      <div style="margin-top:4px">${e.type} · ${e.sector}</div>
+      ${e.priority ? `<div>Priority: <strong style="color:${e.priority==='High'?'#c97cff':e.priority==='Medium'?'#6baed6':'#aaa'}">${e.priority}</strong></div>` : ''}
+      ${e.who ? `<div style="margin-top:3px;color:rgba(255,255,255,.65)">${e.who}</div>` : ''}`;
+    tooltip.style.display = 'block';
+    tooltip.style.left = (evt.clientX + 14) + 'px';
+    tooltip.style.top = (evt.clientY - 10) + 'px';
+    canvas.style.cursor = 'pointer';
+  } else {
+    tooltip.style.display = 'none';
+    canvas.style.cursor = 'default';
+  }
+}
+
+function ganttClick(evt) {
+  const canvas = document.getElementById('gantt-body-canvas');
+  const rect = canvas.getBoundingClientRect();
+  const mx = evt.clientX - rect.left;
+  const my = evt.clientY - rect.top;
+  if (!G._barRects) return;
+  const hit = G._barRects.find(r => mx >= r.x && mx <= r.x+r.w && my >= r.y && my <= r.y+r.h);
+  if (hit && hit.e.link && hit.e.link !== '#') window.open(hit.e.link, '_blank');
+}
+
+// ═══════════════════════════════════════════
+// SURVEY
+// ═══════════════════════════════════════════
+let ratingValues = {quality:0,bd:0};
+let contactCount = 0;
+
+function buildRating(id, key) {
+  const el = document.getElementById(id);
+  el.innerHTML = [1,2,3,4,5].map(n=>`<button class="rating-btn" onclick="setRating('${key}',${n},this)">${n}</button>`).join('');
+}
+
+function setRating(key, val, btn) {
+  ratingValues[key] = val;
+  btn.parentNode.querySelectorAll('.rating-btn').forEach((b,i)=>b.classList.toggle('selected',i<val));
+}
+
+function populateSurveyEventList() {
+  const sel = document.getElementById('s-event');
+  sel.innerHTML = '<option value="">Select event…</option>' +
+    events.map(e=>`<option value="${e.id}">${e.name} (${e.date})</option>`).join('');
+  if(!document.getElementById('rating-quality').children.length) {
+    buildRating('rating-quality','quality');
+    buildRating('rating-bd','bd');
+  }
+  if(!document.getElementById('contacts-list').children.length) addContact();
+}
+
+function addContact() {
+  contactCount++;
+  const div = document.createElement('div');
+  div.className = 'contact-entry';
+  div.id = `contact-${contactCount}`;
+  div.innerHTML = `
+    <button class="remove-btn" onclick="this.parentNode.remove()">×</button>
+    <div class="form-row" style="margin-bottom:8px">
+      <div class="form-field"><label>Name</label><input type="text" placeholder="Contact name" class="c-name"></div>
+      <div class="form-field"><label>Organisation</label><input type="text" placeholder="Company / Organisation" class="c-org"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label>Role / Title</label><input type="text" placeholder="Job title" class="c-role"></div>
+      <div class="form-field"><label>Topic discussed</label><input type="text" placeholder="What did you discuss?" class="c-topic"></div>
+    </div>
+    <div class="form-row full"><div class="form-field"><label>Follow-up action</label><input type="text" placeholder="What's the next step with this contact?" class="c-followup"></div></div>
+  `;
+  document.getElementById('contacts-list').appendChild(div);
+}
+
+function startSurvey(eventId) {
+  showView('survey');
+  setTimeout(()=>{
+    const sel = document.getElementById('s-event');
+    for(let o of sel.options) { if(o.value==eventId) { sel.value = eventId; break; } }
+  }, 100);
+}
+
+function submitSurvey() {
+  const eventId = document.getElementById('s-event').value;
+  const name = document.getElementById('s-name').value.trim();
+  if(!eventId || !name) { showToast('Please select an event and enter your name.','error'); return; }
+  const event = events.find(e=>e.id==eventId);
+  const contacts = [...document.querySelectorAll('.contact-entry')].map(c=>({
+    name: c.querySelector('.c-name')?.value||'',
+    org: c.querySelector('.c-org')?.value||'',
+    role: c.querySelector('.c-role')?.value||'',
+    topic: c.querySelector('.c-topic')?.value||'',
+    followup: c.querySelector('.c-followup')?.value||''
+  })).filter(c=>c.name);
+  const resp = {
+    id: Date.now(),
+    eventId: parseInt(eventId),
+    eventName: event?.name||'',
+    submittedBy: name,
+    role: document.getElementById('s-role').value,
+    dateAttended: document.getElementById('s-date').value,
+    contacts,
+    topics: document.getElementById('s-topics').value,
+    messaging: document.getElementById('s-messaging').value,
+    mms: document.getElementById('s-mms').value,
+    newOpps: document.getElementById('s-newopps').value,
+    ratingQuality: ratingValues.quality,
+    ratingBD: ratingValues.bd,
+    nextYear: document.getElementById('s-nextyear').value,
+    sponsor: document.getElementById('s-sponsor').value,
+    notes: document.getElementById('s-notes').value,
+    submittedAt: new Date().toISOString()
+  };
+  surveys.push(resp);
+  try { localStorage.setItem('ecnr_surveys', JSON.stringify(surveys)); } catch(e) {}
+  // Update event as attended
+  if(event) { event.attended = 'Yes'; event.attendees = name; }
+  showToast('Debrief saved successfully.', 'success');
+  // Reset form
+  document.getElementById('s-event').value='';
+  document.getElementById('s-name').value='';
+  document.getElementById('s-role').value='';
+  document.getElementById('s-date').value='';
+  document.getElementById('s-topics').value='';
+  document.getElementById('s-messaging').value='';
+  document.getElementById('s-mms').value='';
+  document.getElementById('s-newopps').value='';
+  document.getElementById('s-nextyear').value='';
+  document.getElementById('s-sponsor').value='';
+  document.getElementById('s-notes').value='';
+  document.getElementById('contacts-list').innerHTML='';
+  contactCount=0; ratingValues={quality:0,bd:0};
+  buildRating('rating-quality','quality');
+  buildRating('rating-bd','bd');
+  addContact();
+}
+
+// ═══════════════════════════════════════════
+// RESPONSES
+// ═══════════════════════════════════════════
+function renderResponses() {
+  if(!surveys.length) {
+    document.getElementById('responses-container').innerHTML = `
+      <div class="empty-state">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12h8M8 8h8M8 16h4"/></svg>
+        <p>No responses yet. Submit the first debrief from the Survey tab.</p>
+      </div>`;
+    return;
+  }
+  const stars = n => n ? '★'.repeat(n)+'☆'.repeat(5-n) : '—';
+  document.getElementById('responses-container').innerHTML =
+    `<div style="font-size:13px;color:var(--ink-mid);margin-bottom:16px">${surveys.length} response${surveys.length!==1?'s':''} submitted</div>
+    <div class="responses-grid">` +
+    [...surveys].reverse().map(r=>`
+      <div class="response-card">
+        <div class="response-card-header">
+          <div>
+            <div class="response-card-title">${r.eventName}</div>
+            <div class="response-card-meta">By ${r.submittedBy}${r.role?' · '+r.role:''} · ${r.dateAttended||new Date(r.submittedAt).toLocaleDateString()}</div>
+          </div>
+          <div style="text-align:right">
+            <span style="font-size:13px;color:var(--accent)">★ ${r.ratingBD||'–'}/5 BD</span>
+          </div>
+        </div>
+        <div class="response-detail">
+          ${r.contacts?.length ? `<div class="response-row"><strong>Contacts (${r.contacts.length})</strong>${r.contacts.map(c=>`<div style="padding:4px 0;border-bottom:1px solid var(--border)">${c.name}${c.org?' — '+c.org:''}</div>`).join('')}</div>` : ''}
+          ${r.topics?`<div class="response-row"><strong>Topics discussed</strong>${r.topics}</div>`:''}
+          ${r.messaging?`<div class="response-row"><strong>Messaging that resonated</strong>${r.messaging}</div>`:''}
+          ${r.mms?`<div class="response-row"><strong>MMS Opps</strong><span style="font-family:monospace;color:var(--accent)">${r.mms}</span></div>`:''}
+          ${r.newOpps?`<div class="response-row"><strong>New opportunities</strong>${r.newOpps}</div>`:''}
+          ${r.notes?`<div class="response-row"><strong>Notes / next steps</strong>${r.notes}</div>`:''}
+          <div class="response-row" style="display:flex;gap:16px;flex-wrap:wrap">
+            <span><strong style="display:inline;font-size:11px">Quality</strong> ${stars(r.ratingQuality)}</span>
+            <span><strong style="display:inline;font-size:11px">BD value</strong> ${stars(r.ratingBD)}</span>
+          </div>
+          ${r.nextYear?`<div class="response-row"><strong>Next year?</strong>${r.nextYear}</div>`:''}
+        </div>
+      </div>`).join('') + '</div>';
+}
+
+// ═══════════════════════════════════════════
+// SHAREPOINT REST API PERSISTENCE
+// ─────────────────────────────────────────
+// Only one thing to configure:
+// Paste your SharePoint site URL below.
+// e.g. 'https://accenture.sharepoint.com/sites/ECNR'
+// ═══════════════════════════════════════════
+const SP_SITE = 'https://ts.accenture.com/sites/UKIIndustryEnterprise-EnergyCNRLeadership';
+const SP_LIST = 'ECNR Events';
+// ═══════════════════════════════════════════
+
+const SP_READY = !SP_SITE.includes('YOUR_SHAREPOINT');
+const SP_API   = `${SP_SITE}/_api/web/lists/getbytitle('${encodeURIComponent(SP_LIST)}')/items`;
+const SP_HEADERS = {
+  'Accept':       'application/json;odata=nometadata',
+  'Content-Type': 'application/json;odata=nometadata',
+  'X-RequestDigest': '', // filled at runtime
+};
+
+// ── Fetch the SharePoint request digest (needed for write operations) ──
+let _digest = null;
+let _digestExpiry = 0;
+async function getDigest() {
+  if (_digest && Date.now() < _digestExpiry) return _digest;
+  try {
+    const res = await fetch(`${SP_SITE}/_api/contextinfo`, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json;odata=nometadata' },
+      credentials: 'include',
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    _digest = data.FormDigestValue;
+    _digestExpiry = Date.now() + (data.FormDigestTimeoutSeconds - 30) * 1000;
+    return _digest;
+  } catch(e) { return null; }
+}
+
+// ── SharePoint REST helpers ──
+async function spGet(url) {
+  let res;
+  try {
+    res = await fetch(url, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json;odata=nometadata' },
+      credentials: 'include',
+    });
+  } catch(e) {
+    throw new Error(`Network error — ${e.message}. Is the file open from SharePoint?`);
+  }
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    const detail = body.includes('does not exist') ? 'List not found — check the list name is exactly "ECNR Events"'
+      : body.includes('403') || res.status === 403 ? 'Access denied (403) — are you logged into SharePoint?'
+      : body.includes('401') || res.status === 401 ? 'Not authenticated (401) — open the file from SharePoint'
+      : `HTTP ${res.status}`;
+    throw new Error(detail);
+  }
+  return res.json();
+}
+
+async function spPost(url, body, method = 'POST', extra = {}) {
+  const digest = await getDigest();
+  const res = await fetch(url, {
+    method,
+    headers: {
+      'Accept':         'application/json;odata=nometadata',
+      'Content-Type':   'application/json;odata=nometadata',
+      'X-RequestDigest': digest || '',
+      ...extra,
+    },
+    credentials: 'include',
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  if (!res.ok) throw new Error(`SP ${method} ${res.status}`);
+  // DELETE returns 204 no content
+  if (res.status === 204) return true;
+  return res.json().catch(() => true);
+}
+
+// ── Map a SharePoint list item to an event object ──
+function spItemToEvent(item) {
+  return {
+    id:        item.Id,
+    _spId:     item.Id,
+    name:      item.Title       || '',
+    sector:    item.EventSector || 'Upstream',
+    type:      item.EventType   || 'Conference',
+    organiser: item.Organiser   || '',
+    date:      item.EventDate   || '',
+    startDate: item.StartDate   || '',
+    endDate:   item.EndDate     || '',
+    city:      item.City        || '',
+    link:      item.EventLink   || '#',
+    cost:      item.Cost        || '',
+    priority:  item.Priority    || 'Medium',
+    who:       item.WhoAttends  || '',
+    status:    item.EventStatus || 'Upcoming',
+    attended:  item.Attended    || '',
+    attendees: item.Attendees   || '',
+    roi:       item.Priority    || 'Medium',
+    mms:       item.MmsOpp      || '',
+    nextsteps: item.NextSteps   || '',
+  };
+}
+
+// ── Load user-added events from SharePoint List ──
+async function loadSpEvents() {
+  if (!SP_READY) return;
+  // Request all columns we need
+  const select = '$select=Id,Title,EventSector,EventType,Organiser,EventDate,StartDate,EndDate,City,EventLink,Cost,Priority,WhoAttends,EventStatus,Attended,Attendees,MmsOpp,NextSteps&$top=500';
+  const data = await spGet(`${SP_API}?${select}`);
+  const items = data.value || [];
+  const existingSpIds = new Set(events.filter(e => e._spId).map(e => String(e._spId)));
+  items.forEach(item => {
+    const ev = spItemToEvent(item);
+    if (!existingSpIds.has(String(ev._spId))) events.push(ev);
+  });
+  // Re-render active view
+  const active = document.querySelector('.view.active')?.id?.replace('view-','');
+  if (active === 'summary') renderSummary();
+  if (active === 'tracker') renderTable();
+  if (active === 'gantt')   renderGantt();
+}
+
+// ═══════════════════════════════════════════
+// ADD EVENT
+// ═══════════════════════════════════════════
+async function addEvent() {
+  const name = document.getElementById('ae-name').value.trim();
+  const sector = document.getElementById('ae-sector').value;
+  const startDate = document.getElementById('ae-startdate').value;
+  if (!name || !sector || !startDate) { showToast('Please fill in Event name, Sector, and Start date.', 'error'); return; }
+
+  const newEvent = {
+    id:        Date.now(),
+    name,
+    type:      document.getElementById('ae-type').value || 'Conference',
+    sector,
+    organiser: document.getElementById('ae-organiser').value || '',
+    date:      formatDisplayDate(startDate, document.getElementById('ae-enddate').value),
+    startDate,
+    endDate:   document.getElementById('ae-enddate').value || '',
+    city:      document.getElementById('ae-city').value || '',
+    link:      document.getElementById('ae-url').value || '#',
+    cost:      document.getElementById('ae-cost').value || '',
+    priority:  document.getElementById('ae-priority').value || 'Medium',
+    who:       document.getElementById('ae-who').value || '',
+    status:    new Date(startDate) > new Date() ? (startDate >= '2027-01-01' ? 'Future (2027)' : 'Upcoming') : 'Completed',
+    attended: '', attendees: '', roi: document.getElementById('ae-priority').value || 'Medium',
+    mms: '', nextsteps: document.getElementById('ae-nextsteps').value || '',
+  };
+
+  if (SP_READY) {
+    const btn = document.querySelector('#view-add .btn-primary');
+    btn.textContent = 'Saving…'; btn.disabled = true;
+    try {
+      const saved = await spPost(SP_API, {
+        Title:       newEvent.name,
+        EventSector: newEvent.sector,
+        EventType:   newEvent.type,
+        Organiser:   newEvent.organiser,
+        EventDate:   newEvent.date,
+        StartDate:   newEvent.startDate,
+        EndDate:     newEvent.endDate,
+        City:        newEvent.city,
+        EventLink:   newEvent.link,
+        Cost:        newEvent.cost,
+        Priority:    newEvent.priority,
+        WhoAttends:  newEvent.who,
+        EventStatus: newEvent.status,
+        Attended:    newEvent.attended,
+        Attendees:   newEvent.attendees,
+        MmsOpp:      newEvent.mms,
+        NextSteps:   newEvent.nextsteps,
+      });
+      if (saved && saved.Id) {
+        newEvent._spId = saved.Id;
+        newEvent.id    = saved.Id;
+      }
+      showToast(`"${name}" saved to SharePoint — visible to all users.`, 'success');
+    } catch(e) {
+      console.warn('SP add failed:', e);
+      showToast(`"${name}" added locally only (${e.message}). Are you logged into SharePoint?`, 'error');
+    } finally {
+      btn.textContent = 'Add to Tracker'; btn.disabled = false;
+    }
+  } else {
+    showToast(`"${name}" added. Paste your SharePoint site URL to share with others.`, 'success');
+  }
+
+  events.push(newEvent);
+  clearAddForm();
+}
+
+// ═══════════════════════════════════════════
+// BULK SYNC — push all events to SharePoint
+// ═══════════════════════════════════════════
+async function bulkSyncToSharePoint() {
+  if (!SP_READY) {
+    showToast('SharePoint not configured. Paste your site URL in SP_SITE first.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('bulk-sync-btn');
+  const progress = document.getElementById('bulk-sync-progress');
+  const label = document.getElementById('bulk-sync-label');
+  const pct = document.getElementById('bulk-sync-pct');
+  const bar = document.getElementById('bulk-sync-bar');
+  const errBox = document.getElementById('bulk-sync-errors');
+
+  btn.disabled = true;
+  btn.textContent = 'Syncing…';
+  progress.style.display = 'block';
+  errBox.style.display = 'none';
+  errBox.textContent = '';
+
+  // Step 1: fetch existing SP items so we don't duplicate
+  label.textContent = 'Checking existing SharePoint items…';
+  pct.textContent = '0%';
+  bar.style.width = '0%';
+
+  let existingTitles = new Set();
+  try {
+    const existing = await spGet(`${SP_API}?$select=Title&$top=500`);
+    (existing.value || []).forEach(i => existingTitles.add(i.Title.trim().toLowerCase()));
+  } catch(e) {
+    progress.style.display = 'none';
+    btn.disabled = false;
+    btn.textContent = 'Sync all events to SharePoint';
+
+    // Diagnose the likely cause
+    let msg = '';
+    if (location.protocol === 'file:') {
+      msg = 'You are opening this file locally (file://). Upload it to SharePoint first — the REST API only works when the file is served from SharePoint itself.';
+    } else if (!location.hostname.includes('accenture.com') && !location.hostname.includes('sharepoint.com')) {
+      msg = `This file is being served from "${location.hostname}" but the SharePoint API is on ts.accenture.com. Open the file from your SharePoint site instead.`;
+    } else {
+      msg = `SharePoint returned an error: ${e.message}. Check that the list is named exactly "ECNR Events" and that you have access to it.`;
+    }
+
+    // Show detailed error in the progress area
+    progress.style.display = 'block';
+    label.textContent = '⚠ Could not connect to SharePoint';
+    bar.style.background = '#dc2626';
+    bar.style.width = '100%';
+    errBox.style.display = 'block';
+    errBox.innerHTML = `<strong>Diagnosis:</strong> ${msg}<br><br>
+      <strong>Site URL being used:</strong> <code style="background:#fef2f2;padding:1px 4px;border-radius:3px">${SP_SITE}</code><br>
+      <strong>List name:</strong> <code style="background:#fef2f2;padding:1px 4px;border-radius:3px">${SP_LIST}</code><br>
+      <strong>Current page origin:</strong> <code style="background:#fef2f2;padding:1px 4px;border-radius:3px">${location.origin}</code><br>
+      <strong>Raw error:</strong> ${e.message}`;
+    return;
+  }
+
+  // Step 2: filter to events not already in SP
+  const toSync = events.filter(e => !e._spId && !existingTitles.has(e.name.trim().toLowerCase()));
+
+  if (toSync.length === 0) {
+    label.textContent = '✓ All events already in SharePoint — nothing to add.';
+    pct.textContent = '100%';
+    bar.style.width = '100%';
+    bar.style.background = 'var(--newenergy)';
+    btn.disabled = false;
+    btn.textContent = 'Sync all events to SharePoint';
+    showToast('SharePoint list is already up to date.', 'success');
+    return;
+  }
+
+  label.textContent = `Syncing ${toSync.length} events…`;
+  const errors = [];
+  let done = 0;
+
+  // Step 3: write each event, 3 at a time to avoid throttling
+  const BATCH = 3;
+  for (let i = 0; i < toSync.length; i += BATCH) {
+    const chunk = toSync.slice(i, i + BATCH);
+    await Promise.all(chunk.map(async e => {
+      try {
+        const saved = await spPost(SP_API, {
+          Title:       e.name,
+          EventSector: e.sector,
+          EventType:   e.type,
+          Organiser:   e.organiser,
+          EventDate:   e.date,
+          StartDate:   e.startDate,
+          EndDate:     e.endDate   || '',
+          City:        e.city,
+          EventLink:   e.link,
+          Cost:        e.cost,
+          Priority:    e.priority,
+          WhoAttends:  e.who,
+          EventStatus: e.status,
+          Attended:    e.attended  || '',
+          Attendees:   e.attendees || '',
+          MmsOpp:      e.mms       || '',
+          NextSteps:   e.nextsteps || '',
+        });
+        if (saved && saved.Id) {
+          e._spId = saved.Id;
+          e.id    = saved.Id;
+        }
+      } catch(err) {
+        errors.push(`"${e.name}" — ${err.message}`);
+      }
+      done++;
+      const p = Math.round((done / toSync.length) * 100);
+      pct.textContent = p + '%';
+      bar.style.width  = p + '%';
+      label.textContent = `Syncing… ${done} of ${toSync.length}`;
+    }));
+    // Small pause between batches to be kind to SP throttling limits
+    if (i + BATCH < toSync.length) await new Promise(r => setTimeout(r, 300));
+  }
+
+  // Done
+  const succeeded = toSync.length - errors.length;
+  bar.style.background = errors.length ? '#f59e0b' : 'var(--newenergy)';
+  label.textContent = errors.length
+    ? `Completed with ${errors.length} error(s) — ${succeeded} events synced.`
+    : `✓ ${succeeded} events synced to SharePoint successfully.`;
+  pct.textContent = '100%';
+  bar.style.width = '100%';
+
+  if (errors.length) {
+    errBox.style.display = 'block';
+    errBox.innerHTML = '<strong>Errors:</strong><br>' + errors.join('<br>');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Sync all events to SharePoint';
+  showToast(`${succeeded} events pushed to SharePoint.`, errors.length ? 'error' : 'success');
+}
+
+function clearAddForm() {
+  ['ae-name','ae-url','ae-startdate','ae-enddate','ae-venue','ae-city','ae-organiser','ae-cost','ae-who','ae-nextsteps'].forEach(id => document.getElementById(id).value = '');
+  ['ae-sector','ae-type','ae-priority'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('ae-roi').value = '';
+}
+
+function formatDisplayDate(start, end) {
+  if (!start) return '';
+  const s = new Date(start);
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  if (!end || end === start) return `${s.getDate()} ${months[s.getMonth()]} ${s.getFullYear()}`;
+  const e = new Date(end);
+  if (s.getMonth() === e.getMonth()) return `${s.getDate()}–${e.getDate()} ${months[s.getMonth()]} ${s.getFullYear()}`;
+  return `${s.getDate()} ${months[s.getMonth()]} – ${e.getDate()} ${months[e.getMonth()]} ${e.getFullYear()}`;
+}
+
+// ═══════════════════════════════════════════
+// DELETE EVENT
+// ═══════════════════════════════════════════
+async function deleteEvent(id) {
+  const e = events.find(ev => ev.id == id);
+  if (!e) return;
+  if (!confirm(`Delete "${e.name}"?\n\nThis cannot be undone.`)) return;
+
+  // Remove from SharePoint if it has an SP ID
+  if (SP_READY && e._spId) {
+    try {
+      await spPost(
+        `${SP_API}(${e._spId})`,
+        null,
+        'DELETE',
+        { 'IF-MATCH': '*', 'X-HTTP-Method': 'DELETE' }
+      );
+    } catch(err) { console.warn('SP delete failed:', err); }
+  }
+
+  const idx = events.findIndex(ev => ev.id == id);
+  events.splice(idx, 1);
+
+  const row = document.getElementById('row-' + id);
+  if (row) {
+    row.style.transition = 'opacity .2s, background .2s';
+    row.style.background = '#fef2f2';
+    row.style.opacity = '0';
+    setTimeout(() => renderTable(), 220);
+  } else {
+    renderTable();
+  }
+  showToast(`"${e.name}" deleted.`, 'success');
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3800);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+renderSummary();
+
+// Populate sync card count
+const syncCount = document.getElementById('sync-event-count');
+if (syncCount) syncCount.textContent = events.length;
+
+// Hide bulk sync card if SP not configured
+if (!SP_READY) {
+  const bsc = document.getElementById('bulk-sync-card');
+  if (bsc) bsc.style.display = 'none';
+}
+
+if (SP_READY) {
+  const card = document.getElementById('sp-setup-card');
+  if (card) {
+    card.innerHTML = `<div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#3d4f5e">
+      <div style="width:8px;height:8px;border-radius:50%;background:#1a8c5a;flex-shrink:0"></div>
+      <strong style="color:#0f1923">SharePoint sync enabled</strong>
+      <span id="sp-sync-status" style="color:#7d93a3">— loading shared events…</span>
+    </div>`;
+  }
+  loadSpEvents().then(() => {
+    const s = document.getElementById('sp-sync-status');
+    if (s) s.textContent = '— synced ✓';
+  }).catch(err => {
+    const s = document.getElementById('sp-sync-status');
+    if (s) s.textContent = `— sync failed (${err.message}). Check site URL and list name.`;
+  });
+} else {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'background:#1a2733;color:rgba(255,255,255,.75);font-size:12px;padding:8px 32px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.1)';
+  banner.innerHTML = `<span style="color:#a100ff;font-weight:700">ℹ</span>
+    SharePoint not connected — added events are visible in this session only.
+    <a href="#" onclick="showView('add');return false" style="color:#a100ff;margin-left:4px">Set up →</a>`;
+  document.querySelector('header').after(banner);
+}
+</script>
+</body>
+</html>
